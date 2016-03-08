@@ -36,23 +36,27 @@
     }
 
     .modal {
-      display: none;
-      width: 300px;
-      margin: 200px auto;
-      padding: 20px;
-      border: 3px solid #2121de;
+      display: block;
+      width: 400px;
+      margin: 140px auto;
+      padding: 30px;
+      border: 10px solid white;
       border-radius: 10px;
-      background-color: #000;
+      background-color: #0ea2dc;
       text-align: center;
+      color: white;
     }
 
     button {
       border: 0;
-      background-color: yellow;
-      padding: 5px;
+      background-color: #9b5ca4;
+      padding: 10px 15px;
       border-radius: 5px;
       font-size: 1.1em;
       cursor: pointer;
+      color: white;
+      font-weight: bold;
+      margin-top: 30px;
     }
 
     #characters {
@@ -72,7 +76,7 @@
 
     #characters .character span {
       padding-left: 55px;
-      line-height: 50px;
+      line-height: 55px;
       color: white;
     }
 
@@ -119,10 +123,14 @@
     </div>
   </div>
   <div id="winModal" class="modal">
-    <h3>Woot Woot!</h3>
-    <p>You Won The Hack!</p>
-    <p>Amazeballs.</p>
-    <p><button id="restartBtn">Restart</button></p>
+
+    <h2>Congratulations!</h2>
+    <p>You have defeated all evil Pebblers.</p>
+    <p>Go make yourself a cuppa tea.</p>
+    <p>
+      <button id="restartBtn">Restart</button>
+    </p>
+
   </div>
   <div id="loseModal" class="modal">
     <h3>On No</h3>
@@ -143,6 +151,7 @@
     'mark': new Howl({urls: ['assets/mark.wav'], onend: onSoundEnded}),
     'niall': new Howl({urls: ['assets/niall.wav'], onend: onSoundEnded}),
     'toby': new Howl({urls: ['assets/toby.wav'], onend: onSoundEnded}),
+    'jaz': new Howl({urls: ['assets/jaz.wav'], onend: onSoundEnded}),
     'ian': new Howl({urls: ['assets/ian-evil.mp3'], onend: onSoundEnded}),
     'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded})
   };
@@ -490,6 +499,7 @@
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
+        this.playBadGuySound(badGuy.name);
         loseModalEl.style.display = 'block';
       }
     },
