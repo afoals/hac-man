@@ -99,8 +99,12 @@
 }
 
 .character.eliminated {
-  opacity: 0.5;
   transform: scale(0.8);
+  opacity: 0.8;
+}
+
+.character.eliminated span {
+  color: rgba(255,255,255,0.8) !important;
 }
 
 #score {
