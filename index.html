@@ -243,6 +243,7 @@
 
     this.isPacmanInvincible = false;
     this.invincibilityTimeout = null;
+    this.isDead = false;
 
     this.score = 0;
 
@@ -460,8 +461,10 @@
     },
 
     movePacman: function (direction) {
-      this.move(this.pacman, direction, this.speed);
-      this.current = direction;
+      if (!this.isDead) {
+        this.move(this.pacman, direction, this.speed);
+        this.current = direction;
+      }
     },
 
     eatDot: function (pacman, dot) {
@@ -555,12 +558,15 @@
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
-        document.getElementById('killerImage').src = 'assets/talk-' + badGuy.name.toLowerCase() +  '.gif';
-        document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
-        this.playSound(badGuy.name);
-        this.pacman.loadTexture('skull', 0, false);
-        this.pacman.scale.setTo(0.15, 0.15);
-        loseModalEl.style.display = 'block';
+        if (!this.isDead) {
+          this.isDead = true;
+          document.getElementById('killerImage').src = 'assets/talk-' + badGuy.name.toLowerCase() +  '.gif';
+          document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
+          this.playSound(badGuy.name);
+          this.pacman.loadTexture('skull', 0, false);
+          this.pacman.scale.setTo(0.15, 0.15);
+          loseModalEl.style.display = 'block';
+        }
       }
     },
 
@@ -611,6 +617,8 @@
 
     restartGame: function () {
       console.log('restart');
+
+      this.isDead = false;
 
       winModalEl.style.display = 'none';
       loseModalEl.style.display = 'none';
