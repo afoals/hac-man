@@ -35,7 +35,7 @@
       font-weight: bold;
     }
 
-    #winModal {
+    .modal {
       display: none;
       width: 300px;
       margin: 200px auto;
@@ -62,12 +62,20 @@
 
 <div id="overlay">
   <div id="score">0</div>
-  <div id="winModal">
+  <div id="winModal" class="modal">
     <h3>Woot Woot!</h3>
     <p>You Won The Hack!</p>
     <p>Amazeballs.</p>
     <p>
       <button id="restartBtn">Restart</button>
+    </p>
+  </div>
+  <div id="loseModal" class="modal">
+    <h3>On No</h3>
+    <p>You Lost The Hack :(</p>
+    <p>Better luck next time.</p>
+    <p>
+      <button id="restartBtn2">Restart</button>
     </p>
   </div>
 </div>
@@ -78,7 +86,9 @@
 
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
-      restartBtn = document.getElementById('restartBtn');
+      loseModalEl = document.getElementById('loseModal'),
+      restartBtn = document.getElementById('restartBtn'),
+      restartBtn = document.getElementById('restartBtn2');
 
   var game = new Phaser.Game(448, 496, Phaser.AUTO);
 
@@ -125,6 +135,7 @@
       this.physics.startSystem(Phaser.Physics.ARCADE);
 
       restartBtn.onclick = this.restartGame.bind(this);
+      restartBtn2.onclick = this.restartGame.bind(this);
 
     },
 
@@ -374,12 +385,20 @@
 
     },
 
+    hitBadGuy: function(badGuy, pacman) {
+      if (this.isPacmanInvincible) {
+      } else {
+        loseModalEl.style.display = 'block';
+      }
+    },
+
     update: function () {
 
       this.physics.arcade.collide(this.pacman, this.gameLayer);
       for (var i = 0; i < this.badguys.length; i++) {
         var badGuy = this.badguys[i];
         this.physics.arcade.collide(badGuy, this.gameLayer, this.changeBadGuyDirection.bind(this));
+        this.physics.arcade.collide(badGuy, this.pacman, this.hitBadGuy.bind(this));
       }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 
@@ -421,6 +440,7 @@
     restartGame: function () {
 
       winModalEl.style.display = 'none';
+      loseModalEl.style.display = 'none';
 
       this.dots.callAll('revive');
       this.score = 0;
