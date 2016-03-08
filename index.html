@@ -127,15 +127,15 @@
     preload: function () {
 
       //  We need this because the assets are on Amazon S3
-      this.load.image('dot', 'assets/dot.png');
+      this.load.image('dot', 'assets/dot.png', 20, 20);
       this.load.image('pizza', 'assets/pizza.png', 32, 32);
       this.load.image('tiles', 'assets/pacman-tiles.png');
       this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
-      this.load.spritesheet('ian', 'assets/pacman.png', 32, 32);
-      this.load.spritesheet('niall', 'assets/pacman.png', 32, 32);
-      this.load.spritesheet('clo', 'assets/pacman.png', 32, 32);
-      this.load.spritesheet('toby', 'assets/pacman.png', 32, 32);
-      this.load.spritesheet('mark', 'assets/pacman.png', 32, 32);
+      this.load.spritesheet('ian', 'assets/pacman-ian.png', 32, 32);
+      this.load.spritesheet('niall', 'assets/pacman-niall.png', 32, 32);
+      this.load.spritesheet('clo', 'assets/pacman-clo.png', 32, 32);
+      this.load.spritesheet('toby', 'assets/pacman-toby.png', 32, 32);
+      this.load.spritesheet('mark', 'assets/pacman-mark.png', 32, 32);
       this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
       //  Needless to say, graphics (C)opyright Namco
