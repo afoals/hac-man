@@ -184,7 +184,22 @@
   var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
   chooseChar.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
-      hero = btn.className;
+      if (btn.className === 'random') {
+        var r = Math.random();
+        if (r < 0.2) {
+          hero = "emma";
+        } else if (r < 0.4) {
+          hero = "aisling";
+        } else if (r < 0.6) {
+          hero = "elia";
+        } else if (r < 0.8) {
+          hero = "petert";
+        } else {
+          hero = "petero";
+        }
+      } else {
+        hero = btn.className;
+      }
       document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
       game.state.add('Game', Pacman, true);
     }.bind(btn));
