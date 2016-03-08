@@ -122,12 +122,12 @@
   <div id="characters">
     <p>Colleagues to defeat</p>
     <div>
-      <div id="clo" class="character" style="background-image:url(assets/profile-clo.png)"><span>Clo</span></div>
-      <div id="ian" class="character" style="background-image:url(assets/profile-ian.png)"><span>Ian</span></div>
-      <div id="mark" class="character" style="background-image:url(assets/profile-mark.png)"><span>Mark</span></div>
-      <div id="niall" class="character" style="background-image:url(assets/profile-niall.png)"><span>Niall</span></div>
-      <div id="toby" class="character" style="background-image:url(assets/profile-toby.png)"><span>Toby</span></div>
-      <div id="jaz" class="character" style="background-image:url(assets/profile-jaz.png)"><span>Jaz</span></div>
+      <div id="clo" class="character" data-name='clo' style="background-image:url(assets/profile-clo.png)"><span>Clo</span></div>
+      <div id="ian" class="character" data-name='ian' style="background-image:url(assets/profile-ian.png)"><span>Ian</span></div>
+      <div id="mark" class="character" data-name='mark' style="background-image:url(assets/profile-mark.png)"><span>Mark</span></div>
+      <div id="niall" class="character" data-name='niall' style="background-image:url(assets/profile-niall.png)"><span>Niall</span></div>
+      <div id="toby" class="character" data-name='toby' style="background-image:url(assets/profile-toby.png)"><span>Toby</span></div>
+      <div id="jaz" class="character" data-name='jaz' style="background-image:url(assets/profile-jaz.png)"><span>Jaz</span></div>
     </div>
   </div>
   <div id="winModal" class="modal">
@@ -232,6 +232,18 @@
       restartBtn.onclick = this.restartGame.bind(this);
       restartBtn2.onclick = this.restartGame.bind(this);
 
+      characterEls = document.getElementsByClassName('character');
+      for ( var i = 0; i < characterEls.length; i++) {
+        var characterEl = characterEls[i];
+        characterEl.onclick = this.getBadGuySoundFunction(characterEl.dataset.name).bind(this);
+      }
+
+    },
+
+    getBadGuySoundFunction: function(name) {
+      return function() {
+        this.playBadGuySound(name);
+      };
     },
 
     preload: function () {
