@@ -162,7 +162,8 @@
     'jaz': new Howl({urls: ['assets/jaz.wav'], onend: onSoundEnded}),
     'ian': new Howl({urls: ['assets/ian.m4a'], onend: onSoundEnded}),
     'emma': new Howl({urls: ['assets/emma.wav'], onend: onSoundEnded}),
-    'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded})
+    'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded}),
+    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded})
   };
 
   var isPlayingSound = false;
@@ -171,9 +172,12 @@
     isPlayingSound = false;
   }
 
+  var hero = '';
+
   var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
   chooseChar.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
+      hero = btn.className;
       document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
     }.bind(btn));
   });
@@ -242,7 +246,7 @@
 
     getBadGuySoundFunction: function(name) {
       return function() {
-        this.playBadGuySound(name);
+        this.playSound(name);
       };
     },
 
@@ -452,6 +456,8 @@
 
       this.setScoreText(this.score += 50);
 
+      this.playSound('nom');
+
     },
 
     changeBadGuyDirection: function (badGuy, layer) {
@@ -499,23 +505,7 @@
 
     },
 
-
-    playGoodGuySound: function(name) {
-
-      if (isPlayingSound) {
-        return;
-      }
-
-      var sound = SOUNDS[name];
-
-      if (sound) {
-        isPlayingSound = true;
-        sound.play();
-      }
-
-    },
-
-    playBadGuySound: function(name) {
+    playSound: function(name) {
 
       if (isPlayingSound) {
         return;
@@ -532,11 +522,11 @@
 
     hitBadGuy: function(badGuy, pacman) {
       if (this.isPacmanInvincible) {
-        this.playGoodGuySound(badGuy.name);
+        this.playSound('emma'); // TODO: Don't hardcode
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
-        this.playBadGuySound(badGuy.name);
+        this.playSound(badGuy.name);
         loseModalEl.style.display = 'block';
       }
     },
