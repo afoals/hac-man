@@ -133,7 +133,7 @@
 
   </div>
   <div id="loseModal" class="modal">
-    <h3>On No</h3>
+    <h3>Oh No</h3>
     <p>You Lost The Hack :(</p>
     <p>Better luck next time.</p>
     <p>
@@ -152,7 +152,8 @@
     'niall': new Howl({urls: ['assets/niall.wav'], onend: onSoundEnded}),
     'toby': new Howl({urls: ['assets/toby.wav'], onend: onSoundEnded}),
     'jaz': new Howl({urls: ['assets/jaz.wav'], onend: onSoundEnded}),
-    'ian': new Howl({urls: ['assets/ian-evil.mp3'], onend: onSoundEnded}),
+    'ian': new Howl({urls: ['assets/ian.m4a'], onend: onSoundEnded}),
+    'emma': new Howl({urls: ['assets/emma.wav'], onend: onSoundEnded}),
     'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded})
   };
 
@@ -473,6 +474,22 @@
 
     },
 
+
+    playGoodGuySound: function(name) {
+
+      if (isPlayingSound) {
+        return;
+      }
+
+      var sound = SOUNDS[name];
+
+      if (sound) {
+        isPlayingSound = true;
+        sound.play();
+      }
+
+    },
+
     playBadGuySound: function(name) {
 
       if (isPlayingSound) {
@@ -490,7 +507,7 @@
 
     hitBadGuy: function(badGuy, pacman) {
       if (this.isPacmanInvincible) {
-        this.playBadGuySound(badGuy.name);
+        this.playGoodGuySound(badGuy.name);
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
