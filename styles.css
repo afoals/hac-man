@@ -102,3 +102,10 @@
   opacity: 0.5;
   transform: scale(0.8);
 }
+
+#score {
+  font-weight: bold;
+  font-size: 48px;
+  color: white;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
