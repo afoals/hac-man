@@ -103,6 +103,12 @@
 
   var INVINCIBLE_TIME = 5000;
 
+  var SOUNDS = {
+    'MARK': new Howl({urls: ['assets/mark.wav']}),
+    'NIALL': new Howl({urls: ['assets/niall.wav']}),
+    'TOBY': new Howl({urls: ['assets/toby.wav']})
+  };
+
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
       restartBtn = document.getElementById('restartBtn');
@@ -231,6 +237,11 @@
 
       this.pacman.play('munch');
       this.movePacman(Phaser.LEFT);
+
+      // To play sounds:
+      //SOUNDS['MARK'].play();
+      //setTimeout(function() { SOUNDS['NIALL'].play()}, 5000);
+      //setTimeout(function() { SOUNDS['TOBY'].play()}, 10000);
 
     },
 
