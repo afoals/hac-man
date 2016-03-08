@@ -485,6 +485,12 @@
       this.dots.callAll('revive');
       this.score = 0;
       this.setScoreText(this.score);
+
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        this.badguys[i].kill();
+      }
+      this.badguys = [];
+      this.createBadGuys();
     },
 
     createBadGuy: function (x, y, key) {
