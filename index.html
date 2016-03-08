@@ -86,9 +86,14 @@
   <div id="characters">
     <p>Colleagues to defeat</p>
     <div>
+
       <div class="character" style="background-image:url(assets/profile-clo.png)"><span>Clo</span></div>
       <div class="character" style="background-image:url(assets/profile-ian.png)"><span>Ian</span></div>
       <div class="character" style="background-image:url(assets/profile-mark.png)"><span>Mark</span></div>
+      <div class="character" style="background-image:url(assets/profile-niall.png)"><span>Niall</span></div>
+      <div class="character" style="background-image:url(assets/profile-toby.png)"><span>Toby</span></div>
+      <div class="character" style="background-image:url(assets/profile-jaz.png)"><span>Jaz</span></div>
+
     </div>
   </div>
   <div id="winModal" class="modal">
@@ -114,16 +119,24 @@
   var INVINCIBLE_TIME = 5000;
 
   var SOUNDS = {
-    'MARK': new Howl({urls: ['assets/mark.wav']}),
-    'NIALL': new Howl({urls: ['assets/niall.wav']}),
-    'TOBY': new Howl({urls: ['assets/toby.wav']})
+    'mark': new Howl({urls: ['assets/mark.wav'], onend: onSoundEnded}),
+    'niall': new Howl({urls: ['assets/niall.wav'], onend: onSoundEnded}),
+    'toby': new Howl({urls: ['assets/toby.wav'], onend: onSoundEnded}),
+    'ian': new Howl({urls: ['assets/ian-evil.mp3'], onend: onSoundEnded}),
+    'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded})
   };
+
+  var isPlayingSound = false;
+
+  function onSoundEnded() {
+    isPlayingSound = false;
+  }
 
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
       loseModalEl = document.getElementById('loseModal'),
       restartBtn = document.getElementById('restartBtn'),
-      restartBtn = document.getElementById('restartBtn2');
+      restartBtn2 = document.getElementById('restartBtn2');
 
   var game = new Phaser.Game(448, 496, Phaser.AUTO);
 
@@ -186,6 +199,7 @@
       this.load.spritesheet('clo', 'assets/pacman-clo.png', 32, 32);
       this.load.spritesheet('toby', 'assets/pacman-toby.png', 32, 32);
       this.load.spritesheet('mark', 'assets/pacman-mark.png', 32, 32);
+      this.load.spritesheet('jaz', 'assets/pacman-jaz.png', 32, 32);
       this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
       //  Needless to say, graphics (C)opyright Namco
@@ -233,6 +247,7 @@
       this.badguys.push(this.createBadGuy(136, 86, 'clo'));
       this.badguys.push(this.createBadGuy(328, 326, 'toby'));
       this.badguys.push(this.createBadGuy(344, 472, 'mark'));
+      this.badguys.push(this.createBadGuy(136, 472, 'jaz'));
     },
 
     createPacman: function () {
@@ -250,11 +265,6 @@
 
       this.pacman.play('munch');
       this.movePacman(Phaser.LEFT);
-
-      // To play sounds:
-      //SOUNDS['MARK'].play();
-      //setTimeout(function() { SOUNDS['NIALL'].play()}, 5000);
-      //setTimeout(function() { SOUNDS['TOBY'].play()}, 10000);
 
     },
 
@@ -425,8 +435,24 @@
 
     },
 
+    playBadGuySound: function(name) {
+
+      if (isPlayingSound) {
+        return;
+      }
+
+      var sound = SOUNDS[name];
+
+      if (sound) {
+        isPlayingSound = true;
+        sound.play();
+      }
+
+    },
+
     hitBadGuy: function(badGuy, pacman) {
       if (this.isPacmanInvincible) {
+        this.playBadGuySound(badGuy.name);
         badGuy.kill();
       } else {
         loseModalEl.style.display = 'block';
@@ -484,9 +510,18 @@
       winModalEl.style.display = 'none';
       loseModalEl.style.display = 'none';
 
+      // TODO reset pacman position
+      //this.pacman.position.set();
+
       this.dots.callAll('revive');
       this.score = 0;
       this.setScoreText(this.score);
+
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        this.badguys[i].kill();
+      }
+      this.badguys = [];
+      this.createBadGuys();
     },
 
     createBadGuy: function (x, y, key) {
