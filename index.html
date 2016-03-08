@@ -494,6 +494,7 @@
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
+        this.playBadGuySound(badGuy.name);
         loseModalEl.style.display = 'block';
       }
     },
