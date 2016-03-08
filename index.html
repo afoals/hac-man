@@ -18,7 +18,6 @@
       background-color: #ed4f7e;
       font-family: "avenir", sans-serif;
       font-weight: bold;
-
     }
 
     #overlay {
@@ -79,34 +78,58 @@
       line-height: 55px;
       color: white;
     }
+
+    #characters .eliminated span {
+      text-decoration: line-through;
+    }
+
   </style>
+  <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+
   <script src="libs/phaser.min.js"></script>
   <script src="libs/howler.min.js"></script>
 </head>
 <body>
+
+<h1 class="gbl-logo"><img src="assets/logo.svg"></h1>
+
+<div id="splashStart" class="splash">
+  <div class="splash-inner">
+    <img src="assets/logo.svg" class="splash-logo">
+    <ul class="splash-choose">
+      <li class="elia"><span>Elia</span></li>
+      <li class="petero"><span>Peter O</span></li>
+      <li class="emma"><span>Emma</span></li>
+      <li class="petert"><span>Peter T</span></li>
+      <li class="ash"><span>Aisling</span></li>
+      <li class="random"><span>Random</span></li>
+    </ul>
+  </div>
+</div>
 
 <div id="overlay">
   <div id="score">0</div>
   <div id="characters">
     <p>Colleagues to defeat</p>
     <div>
-
-      <div class="character" style="background-image:url(assets/profile-clo.png)"><span>Clo</span></div>
-      <div class="character" style="background-image:url(assets/profile-ian.png)"><span>Ian</span></div>
-      <div class="character" style="background-image:url(assets/profile-mark.png)"><span>Mark</span></div>
-      <div class="character" style="background-image:url(assets/profile-niall.png)"><span>Niall</span></div>
-      <div class="character" style="background-image:url(assets/profile-toby.png)"><span>Toby</span></div>
-      <div class="character" style="background-image:url(assets/profile-jaz.png)"><span>Jaz</span></div>
-
+      <div id="clo" class="character" style="background-image:url(assets/profile-clo.png)"><span>Clo</span></div>
+      <div id="ian" class="character" style="background-image:url(assets/profile-ian.png)"><span>Ian</span></div>
+      <div id="mark" class="character" style="background-image:url(assets/profile-mark.png)"><span>Mark</span></div>
+      <div id="niall" class="character" style="background-image:url(assets/profile-niall.png)"><span>Niall</span></div>
+      <div id="toby" class="character" style="background-image:url(assets/profile-toby.png)"><span>Toby</span></div>
+      <div id="jaz" class="character" style="background-image:url(assets/profile-jaz.png)"><span>Jaz</span></div>
     </div>
   </div>
   <div id="winModal" class="modal">
+
     <h2>Congratulations!</h2>
     <p>You have defeated all evil Pebblers.</p>
     <p>Go make yourself a cuppa tea.</p>
     <p>
       <button id="restartBtn">Restart</button>
     </p>
+
   </div>
   <div id="loseModal" class="modal">
     <h3>On No</h3>
@@ -119,6 +142,7 @@
 </div>
 
 <script type="text/javascript">
+
 
   var INVINCIBLE_TIME = 5000;
 
@@ -135,6 +159,14 @@
   function onSoundEnded() {
     isPlayingSound = false;
   }
+
+  var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
+  chooseChar.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
+    }.bind(btn));
+  });
+
 
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
@@ -458,6 +490,7 @@
       if (this.isPacmanInvincible) {
         this.playBadGuySound(badGuy.name);
         badGuy.kill();
+        document.getElementById(badGuy.name).className += " eliminated";
       } else {
         loseModalEl.style.display = 'block';
       }
@@ -551,5 +584,6 @@
 
 </script>
 
+<audio src="assets/soundtrack.mp3" autoplay></audio>
 </body>
 </html>
