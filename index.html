@@ -68,6 +68,7 @@
 
         this.map = null;
         this.gameLayer = null;
+        this.badguys = [];
         this.pacman = null;
 
         this.safetile = 14;
@@ -111,6 +112,11 @@
             this.load.image('dot', 'assets/dot.png');
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
+            this.load.spritesheet('ian', 'assets/pacman.png', 32, 32);
+            this.load.spritesheet('niall', 'assets/pacman.png', 32, 32);
+            this.load.spritesheet('clo', 'assets/pacman.png', 32, 32);
+            this.load.spritesheet('toby', 'assets/pacman.png', 32, 32);
+            this.load.spritesheet('mark', 'assets/pacman.png', 32, 32);
             this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
             //  Needless to say, graphics (C)opyright Namco
@@ -151,13 +157,19 @@
             this.pacman.anchor.set(0.5);
             this.pacman.animations.add('munch', [0, 1, 2, 1], 20, true);
 
+            this.badguys.push(this.createBadGuy(5, 19, 'ian'));
+            this.badguys.push(this.createBadGuy(10, 7, 'niall'));
+            this.badguys.push(this.createBadGuy(8, 10, 'clo'));
+            this.badguys.push(this.createBadGuy(19, 13, 'toby'));
+            this.badguys.push(this.createBadGuy(20, 18, 'mark'));
+
             this.physics.arcade.enable(this.pacman);
             this.pacman.body.setSize(16, 16, 0, 0);
 
             this.cursors = this.input.keyboard.createCursorKeys();
 
             this.pacman.play('munch');
-            this.move(Phaser.LEFT);
+            this.move(this.pacman, Phaser.LEFT);
 
         },
 
@@ -199,7 +211,7 @@
             //  Check if they want to turn around and can
             if (this.current === this.opposites[turnTo])
             {
-                this.move(turnTo);
+                this.move(this.pacman, turnTo);
             }
             else
             {
@@ -228,7 +240,7 @@
 
             this.pacman.body.reset(this.turnPoint.x, this.turnPoint.y);
 
-            this.move(this.turning);
+            this.move(this.pacman, this.turning);
 
             this.turning = Phaser.NONE;
 
@@ -236,7 +248,7 @@
 
         },
 
-        move: function (direction) {
+        move: function (character, direction) {
 
             var speed = this.speed;
 
@@ -247,28 +259,28 @@
 
             if (direction === Phaser.LEFT || direction === Phaser.RIGHT)
             {
-                this.pacman.body.velocity.x = speed;
+                character.body.velocity.x = speed;
             }
             else
             {
-                this.pacman.body.velocity.y = speed;
+                character.body.velocity.y = speed;
             }
 
             //  Reset the scale and angle (Pacman is facing to the right in the sprite sheet)
-            this.pacman.scale.x = 1;
-            this.pacman.angle = 0;
+            character.scale.x = 1;
+            character.angle = 0;
 
             if (direction === Phaser.LEFT)
             {
-                this.pacman.scale.x = -1;
+                character.scale.x = -1;
             }
             else if (direction === Phaser.UP)
             {
-                this.pacman.angle = 270;
+                character.angle = 270;
             }
             else if (direction === Phaser.DOWN)
             {
-                this.pacman.angle = 90;
+                character.angle = 90;
             }
 
             this.current = direction;
@@ -328,7 +340,15 @@
             this.dots.callAll('revive');
             this.score = 0;
             this.setScoreText(this.score);
+        },
 
+        createBadGuy: function (x, y, key) {
+          var badGuy = game.add.sprite(x * 16 + 8, y * 16 + 8, key, 0);
+          badGuy.name = key;
+          game.physics.arcade.enable(badGuy);
+          badGuy.body.setSize(16, 16, 0, 0);
+          //this.move(badGuy, Phaser.UP);
+          return badGuy;
         }
 
     };
