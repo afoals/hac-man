@@ -54,14 +54,41 @@
       font-size: 1.1em;
       cursor: pointer;
     }
-  </style>
-  <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
 
+    #characters {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #characters .character {
+      width: 32px;
+      height: 32px;
+      background-position: 0 0;
+      float: left;
+      clear: left;
+    }
+
+    #characters .character span {
+      padding-left: 36px;
+      line-height: 32px;
+    }
+  </style>
+  <script src="libs/phaser.min.js"></script>
+  <script src="libs/howler.min.js"></script>
 </head>
 <body>
 
 <div id="overlay">
   <div id="score">0</div>
+  <div id="characters">
+    <p>Colleagues to defeat</p>
+    <div>
+      <div class="character" style="background-image:url(assets/pacman-clo.png)"><span>Clo</span></div>
+      <div class="character" style="background-image:url(assets/pacman-ian.png)"><span>Ian</span></div>
+      <div class="character" style="background-image:url(assets/pacman-mark.png)"><span>Mark</span></div>
+    </div>
+  </div>
   <div id="winModal" class="modal">
     <h3>Woot Woot!</h3>
     <p>You Won The Hack!</p>
