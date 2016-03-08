@@ -168,6 +168,8 @@
       this.dots.setAll('y', 6, false, false, 1);
 
       this.powerUps.push(this.createPowerUp(1, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(26, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(1, 29, 'pizza'));
       this.powerUps.push(this.createPowerUp(26, 29, 'pizza'));
 
       //  Pacman should collide with everything except the safe tile
@@ -337,7 +339,6 @@
         //game.debug.body(powerUp, 'red', false);
         //game.debug.spriteBounds(powerUp, 'pink', false);
       }
-
 
       this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
       this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
