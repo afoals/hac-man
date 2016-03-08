@@ -95,8 +95,8 @@
       text-decoration: line-through;
     }
 
-
   </style>
+
   <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 
@@ -548,7 +548,7 @@
     },
 
     hitBadGuy: function(badGuy, pacman) {
-        var displayName = badGuy.name.substring(0, 1).toUpperCase() + badGuy.name.substring(1);
+      var displayName = badGuy.name.substring(0, 1).toUpperCase() + badGuy.name.substring(1);
       if (this.isPacmanInvincible) {
         this.playSound(hero);
         badGuy.kill();
@@ -567,14 +567,14 @@
       for (var i = 0; i < this.badguys.length; i++) {
         var badGuy = this.badguys[i];
         this.physics.arcade.collide(badGuy, this.gameLayer, this.changeBadGuyDirection.bind(this));
-        this.physics.arcade.collide(badGuy, this.pacman, this.hitBadGuy.bind(this));
+        this.physics.arcade.overlap(badGuy, this.pacman, this.hitBadGuy.bind(this));
       }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 
       // TODO try to switch array to a group so we don't have to loop through
-      for (var i = 0; i < this.powerUps.length; i++ ) {
-        var powerUp = this.powerUps[i];
-        game.physics.arcade.collide(this.pacman, powerUp, this.eatPowerUp.bind(this));
+      for (var j = 0; j < this.powerUps.length; j++ ) {
+        var powerUp = this.powerUps[j];
+        game.physics.arcade.overlap(this.pacman, powerUp, this.eatPowerUp.bind(this));
         //game.debug.body(powerUp, 'red', false);
         //game.debug.spriteBounds(powerUp, 'pink', false);
       }
