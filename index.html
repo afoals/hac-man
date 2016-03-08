@@ -555,12 +555,7 @@
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
-<<<<<<< HEAD
-        // You lost!
-        document.getElementById('killerImage').src = 'assets/profile-' + badGuy.name.toLowerCase() +  '.png';
-=======
         document.getElementById('killerImage').src = 'assets/talk-' + badGuy.name.toLowerCase() +  '.gif';
->>>>>>> b0933a9c15d58f40efc4c823bb6b9a6e9317ad98
         document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
         this.playSound(badGuy.name);
         this.pacman.loadTexture('skull', 0, false);
