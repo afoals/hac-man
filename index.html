@@ -15,7 +15,8 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #6a9db8;
+      background-color: #ed4f7e;
+
     }
 
     #overlay {
@@ -144,6 +145,7 @@
     create: function () {
 
       this.createGameLayer();
+      this.createBadGuys();
       this.createPacman();
 
     },
@@ -175,7 +177,14 @@
 
       //  Pacman should collide with everything except the safe tile
       this.map.setCollisionByExclusion([this.safetile], true, this.gameLayer);
+    },
 
+    createBadGuys: function () {
+      this.badguys.push(this.createBadGuy(104, 328, 'ian'));
+      this.badguys.push(this.createBadGuy(170, 136, 'niall'));
+      this.badguys.push(this.createBadGuy(136, 86, 'clo'));
+      this.badguys.push(this.createBadGuy(328, 326, 'toby'));
+      this.badguys.push(this.createBadGuy(344, 472, 'mark'));
     },
 
     createPacman: function () {
@@ -185,14 +194,6 @@
       this.pacman.anchor.set(0.5);
       this.pacman.animations.add('munch', [0, 1, 2, 1], 20, true);
 
-
-      this.badguys.push(this.createBadGuy(5, 19, 'ian'));
-      this.badguys.push(this.createBadGuy(10, 7, 'niall'));
-      this.badguys.push(this.createBadGuy(8, 10, 'clo'));
-      this.badguys.push(this.createBadGuy(19, 13, 'toby'));
-      this.badguys.push(this.createBadGuy(20, 18, 'mark'));
-
-
       this.physics.arcade.enable(this.pacman);
       this.pacman.body.setSize(16, 16, 0, 0);
 
@@ -200,7 +201,7 @@
       this.cursors = this.input.keyboard.createCursorKeys();
 
       this.pacman.play('munch');
-      this.move(this.pacman, Phaser.LEFT);
+      this.move(this.pacman, Phaser.LEFT, this.speed);
 
 
       // XXX TEMP
@@ -242,7 +243,7 @@
 
       //  Check if they want to turn around and can
       if (this.current === this.opposites[turnTo]) {
-        this.move(this.pacman, turnTo);
+        this.move(this.pacman, turnTo, this.speed);
       }
       else {
         this.turning = turnTo;
@@ -269,7 +270,7 @@
 
       this.pacman.body.reset(this.turnPoint.x, this.turnPoint.y);
 
-      this.move(this.pacman, this.turning);
+      this.move(this.pacman, this.turning, this.speed);
 
       this.turning = Phaser.NONE;
 
@@ -278,10 +279,7 @@
 
     },
 
-    move: function (character, direction) {
-
-      var speed = this.speed;
-
+    move: function (character, direction, speed) {
 
       if (direction === Phaser.LEFT || direction === Phaser.UP) {
         speed = -speed;
@@ -363,6 +361,10 @@
     update: function () {
 
       this.physics.arcade.collide(this.pacman, this.gameLayer);
+      for (var i = 0; i < this.badguys.length; i++) {
+        var badGuy = this.badguys[i];
+        this.physics.arcade.collide(badGuy, this.gameLayer);
+      }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 
       // TODO try to switch array to a group so we don't have to loop through
@@ -410,11 +412,12 @@
     },
 
     createBadGuy: function (x, y, key) {
-      var badGuy = game.add.sprite(x * 16 + 8, y * 16 + 8, key, 0);
+      var badGuy = game.add.sprite(x, y, key, 0);
+      badGuy.anchor.set(0.5);
       badGuy.name = key;
       game.physics.arcade.enable(badGuy);
-      badGuy.body.setSize(16, 16, 0, 0);
-      //this.move(badGuy, Phaser.UP);
+      badGuy.body.setSize(8, 8, 0, 0);
+      this.move(badGuy, Phaser.RIGHT, 40);
       return badGuy;
     },
 
