@@ -202,6 +202,13 @@
       this.pacman.play('munch');
       this.move(this.pacman, Phaser.LEFT);
 
+
+      // XXX TEMP
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        var badGuy = this.badguys[i];
+        badGuy.tint = 0x20a5cb;
+      }
+
     },
 
     checkKeys: function () {
@@ -333,9 +340,22 @@
       console.log('Invincible! :)');
       this.isPacmanInvincible = true;
 
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        var badGuy = this.badguys[i];
+        badGuy.tint = 0x42caf1;
+      }
+
       setTimeout(function() {
+
         console.log('Fallible :(');
+
         this.isPacmanInvincible = false;
+
+        for (var i = 0; i < this.badguys.length; i++ ) {
+          var badGuy = this.badguys[i];
+          badGuy.tint = 0xffffff;
+        }
+
       }.bind(this), INVINCIBLE_TIME);
 
     },
