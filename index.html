@@ -36,7 +36,7 @@
     }
 
     .modal {
-      display: block;
+      display: none;
       width: 400px;
       margin: 140px auto;
       padding: 30px;
@@ -61,8 +61,9 @@
 
     #characters {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 100px;
+      right: 50px;
+      color: white;
     }
 
     #characters .character {
@@ -72,6 +73,7 @@
       background-size: 50px 50px;
       float: left;
       clear: left;
+      margin: 5px auto;
     }
 
     #characters .character span {
@@ -80,9 +82,15 @@
       color: white;
     }
 
-    #characters .eliminated span {
+    #characters .character.eliminated {
+      background-image: url("assets/character-DEAD.png") !important;
+      background-size: 50px 50px;
+    }
+
+    #characters .character.eliminated span {
       text-decoration: line-through;
     }
+
 
   </style>
   <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
