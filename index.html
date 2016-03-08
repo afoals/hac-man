@@ -271,13 +271,19 @@
       this.dots.setAll('x', 6, false, false, 1);
       this.dots.setAll('y', 6, false, false, 1);
 
+      this.createPowerUps();
+
+      //  Pacman should collide with everything except the safe tile
+      this.map.setCollisionByExclusion([this.safetile], true, this.gameLayer);
+    },
+
+    createPowerUps: function () {
+
       this.powerUps.push(this.createPowerUp(1, 1, 'pizza'));
       this.powerUps.push(this.createPowerUp(26, 1, 'pizza'));
       this.powerUps.push(this.createPowerUp(1, 29, 'pizza'));
       this.powerUps.push(this.createPowerUp(26, 29, 'pizza'));
 
-      //  Pacman should collide with everything except the safe tile
-      this.map.setCollisionByExclusion([this.safetile], true, this.gameLayer);
     },
 
     createBadGuys: function () {
@@ -298,7 +304,6 @@
 
       this.physics.arcade.enable(this.pacman);
       this.pacman.body.setSize(16, 16, 0, 0);
-
 
       this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -567,18 +572,29 @@
       winModalEl.style.display = 'none';
       loseModalEl.style.display = 'none';
 
-      // TODO reset pacman position
-      //this.pacman.position.set();
+      this.pacman.kill();
+      this.createPacman();
 
       this.dots.callAll('revive');
       this.score = 0;
       this.setScoreText(this.score);
 
-      for (var i = 0; i < this.badguys.length; i++ ) {
-        this.badguys[i].kill();
+      for (var i = 0; i < this.powerUps.length; i++ ) {
+        this.powerUps[i].kill();
+      }
+      this.powerUps = [];
+      this.createPowerUps();
+
+      for (var j = 0; j < this.badguys.length; j++ ) {
+        this.badguys[j].kill();
       }
       this.badguys = [];
       this.createBadGuys();
+
+      var charEls = document.getElementsByClassName('character');
+      [].forEach.call(charEls, function(el) {
+        el.className = 'character';
+      });
     },
 
     createBadGuy: function (x, y, key) {
