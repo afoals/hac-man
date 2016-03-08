@@ -115,7 +115,7 @@
       <li class="petero"><span>Peter O</span></li>
       <li class="emma"><span>Emma</span></li>
       <li class="petert"><span>Peter T</span></li>
-      <li class="ash"><span>Aisling</span></li>
+      <li class="aisling"><span>Aisling</span></li>
       <li class="random"><span>Random</span></li>
     </ul>
   </div>
@@ -176,13 +176,14 @@
     isPlayingSound = false;
   }
 
-  var hero = '';
+  var hero = 'petero';
 
   var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
   chooseChar.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       hero = btn.className;
       document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
+      game.state.add('Game', Pacman, true);
     }.bind(btn));
   });
 
@@ -260,7 +261,7 @@
       this.load.image('dot', 'assets/dot.png', 20, 20);
       this.load.image('pizza', 'assets/pizza.png', 32, 32);
       this.load.image('tiles', 'assets/pacman-tiles.png');
-      this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
+      this.load.spritesheet('pacman', 'assets/pacman-' + hero + '.png', 32, 32);
       this.load.spritesheet('ian', 'assets/pacman-ian.png', 32, 32);
       this.load.spritesheet('niall', 'assets/pacman-niall.png', 32, 32);
       this.load.spritesheet('clo', 'assets/pacman-clo.png', 32, 32);
@@ -630,7 +631,6 @@
 
   };
 
-  game.state.add('Game', Pacman, true);
 
 </script>
 
