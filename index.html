@@ -163,7 +163,11 @@
     'ian': new Howl({urls: ['assets/ian.m4a'], onend: onSoundEnded}),
     'emma': new Howl({urls: ['assets/emma.wav'], onend: onSoundEnded}),
     'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded}),
-    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded})
+    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded}),
+    'elia': new Howl({urls: ['assets/elia.wav'], onend: onSoundEnded}),
+    'aisling': new Howl({urls: ['assets/aisling.wav'], onend: onSoundEnded}),
+    'petert': new Howl({urls: ['assets/petert.wav'], onend: onSoundEnded}),
+    'petero': new Howl({urls: ['assets/petero.wav'], onend: onSoundEnded})
   };
 
   var isPlayingSound = false;
@@ -523,7 +527,7 @@
 
     hitBadGuy: function(badGuy, pacman) {
       if (this.isPacmanInvincible) {
-        this.playSound('emma'); // TODO: Don't hardcode
+        this.playSound(hero);
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
