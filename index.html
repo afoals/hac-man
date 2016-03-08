@@ -15,7 +15,8 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #6a9db8;
+      background-color: #ed4f7e;
+
     }
 
     #overlay {
@@ -85,7 +86,7 @@
     this.map = null;
     this.gameLayer = null;
     this.badguys = [];
-    this.powerups = [];
+    this.powerUps = [];
     this.pacman = null;
 
 
@@ -127,7 +128,7 @@
     preload: function () {
 
       //  We need this because the assets are on Amazon S3
-      this.load.image('dot', 'assets/dot.png');
+      this.load.image('dot', 'assets/dot.png', 20, 20);
       this.load.image('pizza', 'assets/pizza.png', 32, 32);
       this.load.image('tiles', 'assets/pacman-tiles.png');
       this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
@@ -168,9 +169,10 @@
       this.dots.setAll('x', 6, false, false, 1);
       this.dots.setAll('y', 6, false, false, 1);
 
-      this.powerups.push(this.createPizza(20, 20));
-
-      //this.map.createFromTiles(40, this.safetile, 'pizza', this.gameLayer, this.powerups);
+      this.powerUps.push(this.createPowerUp(1, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(26, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(1, 29, 'pizza'));
+      this.powerUps.push(this.createPowerUp(26, 29, 'pizza'));
 
       //  Pacman should collide with everything except the safe tile
       this.map.setCollisionByExclusion([this.safetile], true, this.gameLayer);
@@ -313,6 +315,16 @@
 
     },
 
+    eatPowerUp: function (pacman, powerUp) {
+
+      console.log('pizza!');
+
+      powerUp.kill();
+
+      this.setScoreText(this.score += 50);
+
+    },
+
     update: function () {
 
       this.physics.arcade.collide(this.pacman, this.gameLayer);
@@ -321,6 +333,14 @@
         this.physics.arcade.collide(badGuy, this.gameLayer);
       }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
+
+      // TODO try to switch array to a group so we don't have to loop through
+      for (var i = 0; i < this.powerUps.length; i++ ) {
+        var powerUp = this.powerUps[i];
+        game.physics.arcade.collide(this.pacman, powerUp, this.eatPowerUp.bind(this));
+        //game.debug.body(powerUp, 'red', false);
+        //game.debug.spriteBounds(powerUp, 'pink', false);
+      }
 
       this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
       this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
@@ -368,9 +388,11 @@
       return badGuy;
     },
 
-    createPizza: function (x, y) {
-      var pizza = game.add.sprite(x, y, 'pizza', 0);
-      return pizza;
+    createPowerUp: function (x, y, key) {
+      var powerUp = game.add.sprite(x * 16 + 4, y * 16, key, 0);
+      powerUp.scale.setTo(0.8, 0.7);
+      game.physics.arcade.enable(powerUp);
+      return powerUp;
     }
 
   };
