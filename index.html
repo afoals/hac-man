@@ -200,7 +200,7 @@
       this.cursors = this.input.keyboard.createCursorKeys();
 
       this.pacman.play('munch');
-      this.move(this.pacman, Phaser.LEFT, this.speed);
+      this.movePacman(Phaser.LEFT);
 
     },
 
@@ -235,7 +235,7 @@
 
       //  Check if they want to turn around and can
       if (this.current === this.opposites[turnTo]) {
-        this.move(this.pacman, turnTo, this.speed);
+        this.movePacman(turnTo);
       }
       else {
         this.turning = turnTo;
@@ -262,7 +262,7 @@
 
       this.pacman.body.reset(this.turnPoint.x, this.turnPoint.y);
 
-      this.move(this.pacman, this.turning, this.speed);
+      this.movePacman(this.turning);
 
       this.turning = Phaser.NONE;
 
@@ -297,10 +297,11 @@
       else if (direction === Phaser.DOWN) {
         character.angle = 90;
       }
+    },
 
+    movePacman: function (direction) {
+      this.move(this.pacman, direction, this.speed);
       this.current = direction;
-
-
     },
 
     eatDot: function (pacman, dot) {
@@ -325,12 +326,25 @@
 
     },
 
+    changeBadGuyDirection: function (badGuy, layer) {
+      var r = Math.random();
+      var direction =
+        r < 0.25
+        ? Phaser.UP
+        : r < 0.5
+          ? Phaser.RIGHT
+          : r < 0.75
+            ? Phaser.DOWN
+            : Phaser.LEFT;
+      this.move(badGuy, direction, 100);
+    },
+
     update: function () {
 
       this.physics.arcade.collide(this.pacman, this.gameLayer);
       for (var i = 0; i < this.badguys.length; i++) {
         var badGuy = this.badguys[i];
-        this.physics.arcade.collide(badGuy, this.gameLayer);
+        this.physics.arcade.collide(badGuy, this.gameLayer, this.changeBadGuyDirection.bind(this));
       }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 
@@ -384,7 +398,7 @@
       badGuy.name = key;
       game.physics.arcade.enable(badGuy);
       badGuy.body.setSize(8, 8, 0, 0);
-      this.move(badGuy, Phaser.RIGHT, 40);
+      this.move(badGuy, Phaser.RIGHT, 100);
       return badGuy;
     },
 
