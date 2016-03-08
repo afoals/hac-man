@@ -16,7 +16,8 @@
       margin: 0;
       padding: 0;
       background-color: #ed4f7e;
-
+      font-family: "avenir", sans-serif;
+      font-weight: bold;
     }
 
     #overlay {
@@ -25,7 +26,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      font-family: "Courier New", sans-serif;
       color: #37bec0;
     }
 
@@ -55,6 +55,10 @@
       cursor: pointer;
     }
 
+  </style>
+  <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+
     #characters {
       position: absolute;
       top: 10px;
@@ -79,6 +83,22 @@
 </head>
 <body>
 
+<h1 class="gbl-logo"><img src="assets/logo.svg"></h1>
+
+<div id="splashStart" class="splash">
+  <div class="splash-inner">
+    <img src="assets/logo.svg" class="splash-logo">
+    <ul class="splash-choose">
+      <li class="elia"><span>Elia</span></li>
+      <li class="petero"><span>Peter O</span></li>
+      <li class="emma"><span>Emma</span></li>
+      <li class="petert"><span>Peter T</span></li>
+      <li class="ash"><span>Aisling</span></li>
+      <li class="random"><span>Random</span></li>
+    </ul>
+  </div>
+</div>
+
 <div id="overlay">
   <div id="score">0</div>
   <div id="characters">
@@ -96,9 +116,7 @@
     <h3>Woot Woot!</h3>
     <p>You Won The Hack!</p>
     <p>Amazeballs.</p>
-    <p>
-      <button id="restartBtn">Restart</button>
-    </p>
+    <p><button id="restartBtn">Restart</button></p>
   </div>
   <div id="loseModal" class="modal">
     <h3>On No</h3>
@@ -111,6 +129,7 @@
 </div>
 
 <script type="text/javascript">
+
 
   var INVINCIBLE_TIME = 5000;
 
@@ -127,6 +146,14 @@
   function onSoundEnded() {
     isPlayingSound = false;
   }
+
+  var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
+  chooseChar.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
+    }.bind(btn));
+  });
+origin/splash
 
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
