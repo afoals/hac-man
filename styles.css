@@ -49,7 +49,7 @@
   transition: 0.2s;
   background-size: 150px;
   background-repeat: no-repeat;
-  background-position: 80px center;
+  background-position: right center;
   text-align: left;
   position: relative;
 }
