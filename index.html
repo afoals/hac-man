@@ -35,7 +35,7 @@
       font-weight: bold;
     }
 
-    #winModal {
+    .modal {
       display: none;
       width: 300px;
       margin: 200px auto;
@@ -54,6 +54,25 @@
       font-size: 1.1em;
       cursor: pointer;
     }
+
+    #characters {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    #characters .character {
+      width: 32px;
+      height: 32px;
+      background-position: 0 0;
+      float: left;
+      clear: left;
+    }
+
+    #characters .character span {
+      padding-left: 36px;
+      line-height: 32px;
+    }
   </style>
   <script src="libs/phaser.min.js"></script>
   <script src="libs/howler.min.js"></script>
@@ -62,12 +81,30 @@
 
 <div id="overlay">
   <div id="score">0</div>
-  <div id="winModal">
+  <div id="characters">
+    <p>Colleagues to defeat</p>
+    <div>
+      <div class="character" style="background-image:url(assets/pacman-clo.png)"><span>Clo</span></div>
+      <div class="character" style="background-image:url(assets/pacman-ian.png)"><span>Ian</span></div>
+      <div class="character" style="background-image:url(assets/pacman-mark.png)"><span>Mark</span></div>
+      <div class="character" style="background-image:url(assets/pacman-niall.png)"><span>Niall</span></div>
+      <div class="character" style="background-image:url(assets/pacman-toby.png)"><span>Toby</span></div>
+    </div>
+  </div>
+  <div id="winModal" class="modal">
     <h3>Woot Woot!</h3>
     <p>You Won The Hack!</p>
     <p>Amazeballs.</p>
     <p>
       <button id="restartBtn">Restart</button>
+    </p>
+  </div>
+  <div id="loseModal" class="modal">
+    <h3>On No</h3>
+    <p>You Lost The Hack :(</p>
+    <p>Better luck next time.</p>
+    <p>
+      <button id="restartBtn2">Restart</button>
     </p>
   </div>
 </div>
@@ -76,9 +113,25 @@
 
   var INVINCIBLE_TIME = 5000;
 
+  var SOUNDS = {
+    'mark': new Howl({urls: ['assets/mark.wav'], onend: onSoundEnded}),
+    'niall': new Howl({urls: ['assets/niall.wav'], onend: onSoundEnded}),
+    'toby': new Howl({urls: ['assets/toby.wav'], onend: onSoundEnded}),
+    'ian': new Howl({urls: ['assets/ian-evil.mp3'], onend: onSoundEnded}),
+    'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded})
+  };
+
+  var isPlayingSound = false;
+
+  function onSoundEnded() {
+    isPlayingSound = false;
+  }
+
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
-      restartBtn = document.getElementById('restartBtn');
+      loseModalEl = document.getElementById('loseModal'),
+      restartBtn = document.getElementById('restartBtn'),
+      restartBtn2 = document.getElementById('restartBtn2');
 
   var game = new Phaser.Game(448, 496, Phaser.AUTO);
 
@@ -125,6 +178,7 @@
       this.physics.startSystem(Phaser.Physics.ARCADE);
 
       restartBtn.onclick = this.restartGame.bind(this);
+      restartBtn2.onclick = this.restartGame.bind(this);
 
     },
 
@@ -376,12 +430,37 @@
 
     },
 
+    playBadGuySound: function(name) {
+
+      if (isPlayingSound) {
+        return;
+      }
+
+      var sound = SOUNDS[name];
+
+      if (sound) {
+        isPlayingSound = true;
+        sound.play();
+      }
+
+    },
+
+    hitBadGuy: function(badGuy, pacman) {
+      if (this.isPacmanInvincible) {
+        this.playBadGuySound(badGuy.name);
+        badGuy.kill();
+      } else {
+        loseModalEl.style.display = 'block';
+      }
+    },
+
     update: function () {
 
       this.physics.arcade.collide(this.pacman, this.gameLayer);
       for (var i = 0; i < this.badguys.length; i++) {
         var badGuy = this.badguys[i];
         this.physics.arcade.collide(badGuy, this.gameLayer, this.changeBadGuyDirection.bind(this));
+        this.physics.arcade.collide(badGuy, this.pacman, this.hitBadGuy.bind(this));
       }
       this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 
@@ -421,12 +500,23 @@
     },
 
     restartGame: function () {
+      console.log('restart');
 
       winModalEl.style.display = 'none';
+      loseModalEl.style.display = 'none';
+
+      // TODO reset pacman position
+      //this.pacman.position.set();
 
       this.dots.callAll('revive');
       this.score = 0;
       this.setScoreText(this.score);
+
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        this.badguys[i].kill();
+      }
+      this.badguys = [];
+      this.createBadGuys();
     },
 
     createBadGuy: function (x, y, key) {
