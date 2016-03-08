@@ -166,7 +166,11 @@
     'ian': new Howl({urls: ['assets/ian.m4a'], onend: onSoundEnded}),
     'emma': new Howl({urls: ['assets/emma.wav'], onend: onSoundEnded}),
     'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded}),
-    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded}),
+    'nom-emma': new Howl({urls: ['assets/nom-emma.wav'], onend: onSoundEnded}),
+    'nom-elia': new Howl({urls: ['assets/nom-elia.wav'], onend: onSoundEnded}),
+    'nom-petert': new Howl({urls: ['assets/nom-petert.wav'], onend: onSoundEnded}),
+    'nom-petero': new Howl({urls: ['assets/nom-petero.wav'], onend: onSoundEnded}),
+    'nom-aisling': new Howl({urls: ['assets/nom-aisling.wav'], onend: onSoundEnded}),
     'elia': new Howl({urls: ['assets/elia.wav'], onend: onSoundEnded}),
     'aisling': new Howl({urls: ['assets/aisling.wav'], onend: onSoundEnded}),
     'petert': new Howl({urls: ['assets/petert.wav'], onend: onSoundEnded}),
@@ -184,7 +188,22 @@
   var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
   chooseChar.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
-      hero = btn.className;
+      if (btn.className === 'random') {
+        var r = Math.random();
+        if (r < 0.2) {
+          hero = "emma";
+        } else if (r < 0.4) {
+          hero = "aisling";
+        } else if (r < 0.6) {
+          hero = "elia";
+        } else if (r < 0.8) {
+          hero = "petert";
+        } else {
+          hero = "petero";
+        }
+      } else {
+        hero = btn.className;
+      }
       document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
       game.state.add('Game', Pacman, true);
     }.bind(btn));
@@ -464,7 +483,7 @@
 
       this.setScoreText(this.score += 50);
 
-      this.playSound('nom');
+      this.playSound('nom-' + hero);
 
     },
 
