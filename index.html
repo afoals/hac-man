@@ -73,6 +73,8 @@
 
 <script type="text/javascript">
 
+  var INVINCIBLE_TIME = 5000;
+
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
       restartBtn = document.getElementById('restartBtn');
@@ -81,13 +83,11 @@
 
   var Pacman = function (game) {
 
-
     this.map = null;
     this.gameLayer = null;
     this.badguys = [];
     this.powerUps = [];
     this.pacman = null;
-
 
     this.safetile = 14;
     this.gridsize = 16;
@@ -103,6 +103,7 @@
 
     this.current = Phaser.NONE;
     this.turning = Phaser.NONE;
+    this.isPacmanInvincible = false;
 
     this.score = 0;
 
@@ -319,11 +320,23 @@
 
     eatPowerUp: function (pacman, powerUp) {
 
-      console.log('pizza!');
-
       powerUp.kill();
 
+      this.goInvincible();
+
       this.setScoreText(this.score += 50);
+
+    },
+
+    goInvincible: function() {
+
+      console.log('Invincible! :)');
+      this.isPacmanInvincible = true;
+
+      setTimeout(function() {
+        console.log('Fallible :(');
+        this.isPacmanInvincible = false;
+      }.bind(this), INVINCIBLE_TIME);
 
     },
 
