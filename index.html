@@ -104,7 +104,9 @@
 
     this.current = Phaser.NONE;
     this.turning = Phaser.NONE;
+
     this.isPacmanInvincible = false;
+    this.invincibilityTimeout = null;
 
     this.score = 0;
 
@@ -331,23 +333,30 @@
       console.log('Invincible! :)');
       this.isPacmanInvincible = true;
 
-      for (var i = 0; i < this.badguys.length; i++ ) {
-        var badGuy = this.badguys[i];
-        badGuy.tint = 0x42caf1;
+      if ( this.invincibilityTimeout ) {
+        // Cancel previous timer
+        clearTimeout( this.invincibilityTimeout );
       }
 
-      setTimeout(function() {
+      this.setBadGuysColour(0x42caf1);
+
+      this.invincibilityTimeout = setTimeout(function() {
 
         console.log('Fallible :(');
 
         this.isPacmanInvincible = false;
-
-        for (var i = 0; i < this.badguys.length; i++ ) {
-          var badGuy = this.badguys[i];
-          badGuy.tint = 0xffffff;
-        }
+        this.setBadGuysColour(0xffffff);
 
       }.bind(this), INVINCIBLE_TIME);
+
+    },
+
+    setBadGuysColour: function(colour) {
+
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        var badGuy = this.badguys[i];
+        badGuy.tint = colour;
+      }
 
     },
 
