@@ -15,7 +15,7 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #6da0bb;
+      background-color: #6a9db8;
     }
 
     #overlay {
@@ -55,6 +55,7 @@
     }
   </style>
   <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+
 </head>
 <body>
 
@@ -80,11 +81,13 @@
 
   var Pacman = function (game) {
 
+
     this.map = null;
     this.gameLayer = null;
     this.badguys = [];
     this.powerups = [];
     this.pacman = null;
+
 
     this.safetile = 14;
     this.gridsize = 16;
@@ -136,9 +139,7 @@
       this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
       //  Needless to say, graphics (C)opyright Namco
-
     },
-
     create: function () {
 
       this.createGameLayer();
@@ -182,14 +183,17 @@
       this.pacman.anchor.set(0.5);
       this.pacman.animations.add('munch', [0, 1, 2, 1], 20, true);
 
+
       this.badguys.push(this.createBadGuy(5, 19, 'ian'));
       this.badguys.push(this.createBadGuy(10, 7, 'niall'));
       this.badguys.push(this.createBadGuy(8, 10, 'clo'));
       this.badguys.push(this.createBadGuy(19, 13, 'toby'));
       this.badguys.push(this.createBadGuy(20, 18, 'mark'));
 
+
       this.physics.arcade.enable(this.pacman);
       this.pacman.body.setSize(16, 16, 0, 0);
+
 
       this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -233,10 +237,10 @@
       }
       else {
         this.turning = turnTo;
-
         this.turnPoint.x = (this.marker.x * this.gridsize) + (this.gridsize / 2);
         this.turnPoint.y = (this.marker.y * this.gridsize) + (this.gridsize / 2);
       }
+
 
     },
 
@@ -260,6 +264,7 @@
 
       this.turning = Phaser.NONE;
 
+
       return true;
 
     },
@@ -267,6 +272,7 @@
     move: function (character, direction) {
 
       var speed = this.speed;
+
 
       if (direction === Phaser.LEFT || direction === Phaser.UP) {
         speed = -speed;
@@ -294,6 +300,7 @@
       }
 
       this.current = direction;
+
 
     },
 
