@@ -203,13 +203,6 @@
       this.pacman.play('munch');
       this.move(this.pacman, Phaser.LEFT, this.speed);
 
-
-      // XXX TEMP
-      for (var i = 0; i < this.badguys.length; i++ ) {
-        var badGuy = this.badguys[i];
-        badGuy.tint = 0x20a5cb;
-      }
-
     },
 
     checkKeys: function () {
