@@ -290,6 +290,7 @@
       this.load.spritesheet('toby', 'assets/pacman-toby.png', 32, 32);
       this.load.spritesheet('mark', 'assets/pacman-mark.png', 32, 32);
       this.load.spritesheet('jaz', 'assets/pacman-jaz.png', 32, 32);
+      this.load.image('skull', 'assets/character-DEAD.png', 32, 32);
       this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
       //  Needless to say, graphics (C)opyright Namco
@@ -444,11 +445,11 @@
       }
 
       //  Reset the scale and angle (Pacman is facing to the right in the sprite sheet)
-      character.scale.x = 1;
+      //character.scale.x = 1;
       character.angle = 0;
 
       if (direction === Phaser.LEFT) {
-        character.scale.x = -1;
+        //character.scale.x = -1;
       }
       else if (direction === Phaser.UP) {
         character.angle = 270;
@@ -554,9 +555,12 @@
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
+        // You lost!
         document.getElementById('killerImage').src = 'assets/profile-' + badGuy.name.toLowerCase() +  '.png';
         document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
         this.playSound(badGuy.name);
+        this.pacman.loadTexture('skull', 0, false);
+        this.pacman.scale.setTo(0.15, 0.15);
         loseModalEl.style.display = 'block';
       }
     },
