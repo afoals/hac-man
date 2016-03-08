@@ -38,7 +38,7 @@
     .modal {
       display: none;
       width: 400px;
-      margin: 140px auto;
+      margin:0 auto;
       padding: 30px;
       border: 10px solid white;
       border-radius: 10px;
@@ -76,6 +76,10 @@
       margin: 5px auto;
     }
 
+    #characters .character:hover {
+      cursor: pointer;
+    }
+
     #characters .character span {
       padding-left: 55px;
       line-height: 55px;
@@ -101,7 +105,7 @@
 </head>
 <body>
 
-<h1 class="gbl-logo"><img src="assets/logo.svg"></h1>
+<h1 class="gbl-logo" style="position: absolute; right: 80px; top: 10px;"><img src="assets/logo.svg"></h1>
 
 <div id="splashStart" class="splash">
   <div class="splash-inner">
@@ -111,7 +115,7 @@
       <li class="petero"><span>Peter O</span></li>
       <li class="emma"><span>Emma</span></li>
       <li class="petert"><span>Peter T</span></li>
-      <li class="ash"><span>Aisling</span></li>
+      <li class="aisling"><span>Aisling</span></li>
       <li class="random"><span>Random</span></li>
     </ul>
   </div>
@@ -141,9 +145,8 @@
 
   </div>
   <div id="loseModal" class="modal">
-    <h3>Oh No</h3>
-    <p>You Lost The Hack :(</p>
-    <p>Better luck next time.</p>
+    <h3 id="killerText"></h3>
+    <img id="killerImage" src="">
     <p>
       <button id="restartBtn2">Restart</button>
     </p>
@@ -163,7 +166,11 @@
     'ian': new Howl({urls: ['assets/ian.m4a'], onend: onSoundEnded}),
     'emma': new Howl({urls: ['assets/emma.wav'], onend: onSoundEnded}),
     'clo': new Howl({urls: ['assets/clo-evil.mp3'], onend: onSoundEnded}),
-    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded})
+    'nom': new Howl({urls: ['assets/nom.wav'], onend: onSoundEnded}),
+    'elia': new Howl({urls: ['assets/elia.wav'], onend: onSoundEnded}),
+    'aisling': new Howl({urls: ['assets/aisling.wav'], onend: onSoundEnded}),
+    'petert': new Howl({urls: ['assets/petert.wav'], onend: onSoundEnded}),
+    'petero': new Howl({urls: ['assets/petero.wav'], onend: onSoundEnded})
   };
 
   var isPlayingSound = false;
@@ -172,13 +179,14 @@
     isPlayingSound = false;
   }
 
-  var hero = '';
+  var hero = 'petero';
 
   var chooseChar = Array.prototype.slice.call(document.querySelectorAll(".splash-choose li"));
   chooseChar.forEach(function (btn) {
     btn.addEventListener("click", function (event) {
       hero = btn.className;
       document.getElementsByTagName("body")[0].classList.toggle("char-chosen");
+      game.state.add('Game', Pacman, true);
     }.bind(btn));
   });
 
@@ -256,7 +264,7 @@
       this.load.image('dot', 'assets/dot.png', 20, 20);
       this.load.image('pizza', 'assets/pizza.png', 32, 32);
       this.load.image('tiles', 'assets/pacman-tiles.png');
-      this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
+      this.load.spritesheet('pacman', 'assets/pacman-' + hero + '.png', 32, 32);
       this.load.spritesheet('ian', 'assets/pacman-ian.png', 32, 32);
       this.load.spritesheet('niall', 'assets/pacman-niall.png', 32, 32);
       this.load.spritesheet('clo', 'assets/pacman-clo.png', 32, 32);
@@ -521,11 +529,14 @@
     },
 
     hitBadGuy: function(badGuy, pacman) {
+        var displayName = badGuy.name.substring(0, 1).toUpperCase() + badGuy.name.substring(1);
       if (this.isPacmanInvincible) {
-        this.playSound('emma'); // TODO: Don't hardcode
+        this.playSound(hero);
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
+        document.getElementById('killerImage').src = 'assets/profile-' + badGuy.name.toLowerCase() +  '.png';
+        document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
         this.playSound(badGuy.name);
         loseModalEl.style.display = 'block';
       }
@@ -626,7 +637,6 @@
 
   };
 
-  game.state.add('Game', Pacman, true);
 
 </script>
 
