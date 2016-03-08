@@ -26,7 +26,7 @@
       width: 100%;
       height: 100%;
       font-family: "Courier New", sans-serif;
-      color: yellow;
+      color: #37bec0;
     }
 
     #score {
@@ -74,6 +74,8 @@
 
 <script type="text/javascript">
 
+  var INVINCIBLE_TIME = 5000;
+
   var scoreEl = document.getElementById('score'),
       winModalEl = document.getElementById('winModal'),
       restartBtn = document.getElementById('restartBtn');
@@ -82,13 +84,11 @@
 
   var Pacman = function (game) {
 
-
     this.map = null;
     this.gameLayer = null;
     this.badguys = [];
     this.powerUps = [];
     this.pacman = null;
-
 
     this.safetile = 14;
     this.gridsize = 16;
@@ -104,6 +104,9 @@
 
     this.current = Phaser.NONE;
     this.turning = Phaser.NONE;
+
+    this.isPacmanInvincible = false;
+    this.invincibilityTimeout = null;
 
     this.score = 0;
 
@@ -318,9 +321,9 @@
 
     eatPowerUp: function (pacman, powerUp) {
 
-      console.log('pizza!');
-
       powerUp.kill();
+
+      this.goInvincible();
 
       this.setScoreText(this.score += 50);
 
@@ -337,6 +340,38 @@
             ? Phaser.DOWN
             : Phaser.LEFT;
       this.move(badGuy, direction, 100);
+    },
+
+    goInvincible: function() {
+
+      console.log('Invincible! :)');
+      this.isPacmanInvincible = true;
+
+      if ( this.invincibilityTimeout ) {
+        // Cancel previous timer
+        clearTimeout( this.invincibilityTimeout );
+      }
+
+      this.setBadGuysColour(0x42caf1);
+
+      this.invincibilityTimeout = setTimeout(function() {
+
+        console.log('Fallible :(');
+
+        this.isPacmanInvincible = false;
+        this.setBadGuysColour(0xffffff);
+
+      }.bind(this), INVINCIBLE_TIME);
+
+    },
+
+    setBadGuysColour: function(colour) {
+
+      for (var i = 0; i < this.badguys.length; i++ ) {
+        var badGuy = this.badguys[i];
+        badGuy.tint = colour;
+      }
+
     },
 
     update: function () {
