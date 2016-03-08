@@ -446,6 +446,7 @@
     hitBadGuy: function(badGuy, pacman) {
       if (this.isPacmanInvincible) {
         this.playBadGuySound(badGuy.name);
+        badGuy.kill();
       } else {
         loseModalEl.style.display = 'block';
       }
@@ -497,6 +498,7 @@
     },
 
     restartGame: function () {
+      console.log('restart');
 
       winModalEl.style.display = 'none';
       loseModalEl.style.display = 'none';
