@@ -168,8 +168,10 @@
       this.dots.setAll('x', 6, false, false, 1);
       this.dots.setAll('y', 6, false, false, 1);
 
-      this.powerUps.push(this.createPizza(20, 20));
-      this.powerUps.push(this.createPizza(140, 140));
+      this.powerUps.push(this.createPowerUp(1, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(26, 1, 'pizza'));
+      this.powerUps.push(this.createPowerUp(1, 29, 'pizza'));
+      this.powerUps.push(this.createPowerUp(26, 29, 'pizza'));
 
       //  Pacman should collide with everything except the safe tile
       this.map.setCollisionByExclusion([this.safetile], true, this.gameLayer);
@@ -333,7 +335,10 @@
 
       // TODO try to switch array to a group so we don't have to loop through
       for (var i = 0; i < this.powerUps.length; i++ ) {
-        game.physics.arcade.collide(this.pacman, this.powerUps[i], this.eatPowerUp.bind(this));
+        var powerUp = this.powerUps[i];
+        game.physics.arcade.collide(this.pacman, powerUp, this.eatPowerUp.bind(this));
+        //game.debug.body(powerUp, 'red', false);
+        //game.debug.spriteBounds(powerUp, 'pink', false);
       }
 
       this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
@@ -381,11 +386,11 @@
       return badGuy;
     },
 
-    createPizza: function (x, y) {
-      var pizza = game.add.sprite(x, y, 'pizza', 0);
-      game.physics.arcade.enable(pizza);
-      pizza.scale.setTo(0.2, 0.2);
-      return pizza;
+    createPowerUp: function (x, y, key) {
+      var powerUp = game.add.sprite(x * 16 + 4, y * 16, key, 0);
+      powerUp.scale.setTo(0.8, 0.7);
+      game.physics.arcade.enable(powerUp);
+      return powerUp;
     }
 
   };
