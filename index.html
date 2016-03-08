@@ -38,7 +38,7 @@
     .modal {
       display: none;
       width: 400px;
-      margin: 140px auto;
+      margin:0 auto;
       padding: 30px;
       border: 10px solid white;
       border-radius: 10px;
@@ -76,6 +76,10 @@
       margin: 5px auto;
     }
 
+    #characters .character:hover {
+      cursor: pointer;
+    }
+
     #characters .character span {
       padding-left: 55px;
       line-height: 55px;
@@ -101,7 +105,7 @@
 </head>
 <body>
 
-<h1 class="gbl-logo"><img src="assets/logo.svg"></h1>
+<h1 class="gbl-logo" style="position: absolute; right: 80px; top: 10px;"><img src="assets/logo.svg"></h1>
 
 <div id="splashStart" class="splash">
   <div class="splash-inner">
@@ -141,9 +145,8 @@
 
   </div>
   <div id="loseModal" class="modal">
-    <h3>Oh No</h3>
-    <p>You Lost The Hack :(</p>
-    <p>Better luck next time.</p>
+    <h3 id="killerText"></h3>
+    <img id="killerImage" src="">
     <p>
       <button id="restartBtn2">Restart</button>
     </p>
@@ -526,11 +529,14 @@
     },
 
     hitBadGuy: function(badGuy, pacman) {
+        var displayName = badGuy.name.substring(0, 1).toUpperCase() + badGuy.name.substring(1);
       if (this.isPacmanInvincible) {
         this.playSound(hero);
         badGuy.kill();
         document.getElementById(badGuy.name).className += " eliminated";
       } else {
+        document.getElementById('killerImage').src = 'assets/profile-' + badGuy.name.toLowerCase() +  '.png';
+        document.getElementById('killerText').innerHTML = 'You have been defeated by ' + displayName;
         this.playSound(badGuy.name);
         loseModalEl.style.display = 'block';
       }
