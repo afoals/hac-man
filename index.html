@@ -140,6 +140,7 @@
       this.load.spritesheet('clo', 'assets/pacman-clo.png', 32, 32);
       this.load.spritesheet('toby', 'assets/pacman-toby.png', 32, 32);
       this.load.spritesheet('mark', 'assets/pacman-mark.png', 32, 32);
+      this.load.spritesheet('jaz', 'assets/pacman-jaz.png', 32, 32);
       this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
       //  Needless to say, graphics (C)opyright Namco
@@ -187,6 +188,7 @@
       this.badguys.push(this.createBadGuy(136, 86, 'clo'));
       this.badguys.push(this.createBadGuy(328, 326, 'toby'));
       this.badguys.push(this.createBadGuy(344, 472, 'mark'));
+      this.badguys.push(this.createBadGuy(136, 472, 'jaz'));
     },
 
     createPacman: function () {
