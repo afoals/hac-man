@@ -75,27 +75,27 @@
 }
 
 .elia {
-  background-image: url('../assets/elia.png');
+  background-image: url('assets/elia.png');
 }
 
 .petero {
-  background-image: url('../assets/petero.png');
+  background-image: url('assets/petero.png');
 }
 
 .emma {
-  background-image: url('../assets/emma.png');
+  background-image: url('assets/emma.png');
 }
 
 .petert {
-  background-image: url('../assets/petert.png');
+  background-image: url('assets/petert.png');
 }
 
 .ash {
-  background-image: url('../assets/ash.png');
+  background-image: url('assets/ash.png');
 }
 
 .random {
-  background-image: url('../assets/random.png');
+  background-image: url('assets/random.png');
 }
 
 .character.eliminated {
