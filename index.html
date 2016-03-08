@@ -174,11 +174,11 @@
       this.pacman.anchor.set(0.5);
       this.pacman.animations.add('munch', [0, 1, 2, 1], 20, true);
 
-      this.badguys.push(this.createBadGuy(95, 310, 'ian'));
-      this.badguys.push(this.createBadGuy(155, 210, 'niall'));
-      this.badguys.push(this.createBadGuy(135, 160, 'clo'));
-      this.badguys.push(this.createBadGuy(295, 210, 'toby'));
-      this.badguys.push(this.createBadGuy(335, 250, 'mark'));
+      this.badguys.push(this.createBadGuy(5, 19, 'ian'));
+      this.badguys.push(this.createBadGuy(10, 7, 'niall'));
+      this.badguys.push(this.createBadGuy(8, 10, 'clo'));
+      this.badguys.push(this.createBadGuy(19, 13, 'toby'));
+      this.badguys.push(this.createBadGuy(20, 18, 'mark'));
 
       this.physics.arcade.enable(this.pacman);
       this.pacman.body.setSize(16, 16, 0, 0);
@@ -343,7 +343,7 @@
     },
 
     createBadGuy: function (x, y, key) {
-      var badGuy = game.add.sprite(x, y, key, 0);
+      var badGuy = game.add.sprite(x * 16 + 8, y * 16 + 8, key, 0);
       badGuy.name = key;
       game.physics.arcade.enable(badGuy);
       badGuy.body.setSize(16, 16, 0, 0);
